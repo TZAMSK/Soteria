@@ -2,10 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Soteria</title>
+    <link rel="stylesheet" th:href="@{images/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+    <header>
+        <div class="head-logo">
+            <img id="logo" class="logo" th:src="@{images/spirelogo.png}">
+            <h1 class="title">Soteria</h1>
+        </div>
 
+        <div class="subnav">
+            <button class="subnavbtn"> Your stats<i class="fa fa-caret-down"></i></button>
+            <div class="subnav-content">
+                <div class="subnavbtn">
+                    <button class="subnavbtn">Endgame stats<i class="fa fa-caret-down"></i></button>
+                        <div class="sub-subnav-content">
+                            <li><a href="#">Raid stats</a></li>
+                            <li><a href="#">Dungeon stats</a></li>
+                        </div>
+                </div>
+                <div class="subnavbtn">
+                    <button class="subnavbtn">Vendor stats</button>
+                </div>
+                <div class="subnavbtn">
+                    <button class="subnavbtn">Playlist stats<i class="fa fa-caret-down"></i></button>
+                    <div class="sub-subnav-content">
+                        <li><a href="#">Vanguard stats</a></li>
+                        <li><a href="#">Crucible stats</a></li>
+                        <li><a href="#">Gambit stats</a></li>
+                    </div>
+                </div>
+                <div class="subnavbtn">
+                    <button class="subnavbtn">Bounties</button>
+                </div>
+                <div class="subnavbtn">
+                    <button class="subnavbtn">Power</button>
+                </div>
+                <div class="subnavbtn">
+                    <button class="subnavbtn">Weapons</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <script type="text/javascript">
+        window.addEventListener("scroll", function (){
+            var header = document.querySelector("header");
+            var logo = document.getElementById("logo");
+            var a_element = document.querySelectorAll("a");
+            var subnavbtn = document.getElementsByClassName("subnavbtn");
+            header.classList.toggle("sticky", window.scrollY > 0);
+            if (window.scrollY > 0) {
+                logo.src = "images/spirelogo-black.png";
+                a_element.forEach(function(a){
+                    a.style.color = "white"
+                })
+                subnavbtn.forEach(function(sub){
+                    sub.style.color = "white"
+                });
+            } else {
+                logo.src = "images/spirelogo.png";
+                a_element.forEach(function(a){
+                    a.style.color = "white"
+                });
+                subnavbtn.forEach(function(sub){
+                    sub.style.color = "white"
+                });
+            }
+        });
+    </script>
 </body>
 </html>
