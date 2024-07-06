@@ -19,29 +19,34 @@
         <div>
             <h2>Characters:</h2>
             <div th:each="character : ${characters}">
-                <img src="">
-                <p>Character ID: <span th:text="${character.get('membershipId').asText()}"></span></p>
-                <p>Last Played: <span th:text="${character.get('dateLastPlayed').asText()}"></span></p>
-                <div class="character-emblem">
-                    <img class="user-banner" th:src="@{'https://www.bungie.net' + ${character.get('emblemBackgroundPath').asText()}}" alt="Character Emblem">
-                    <div class="power-level" th:text="${character.get('light').asText()}"></div>
-                    <div class="type-character">
-                        <div class="class-name">
-                            <span th:switch="${character.get('classHash').asText()}">
-                                <span th:case="'2271682572'">Warlock</span>
-                                <span th:case="'3655393761'">Titan</span>
-                                <span th:case="'671679327'">Hunter</span>
-                            </span>
+                <a th:href="@{'/profile/' + ${character.get('membershipType').asText()} + '/' + ${character.get('membershipId').asText()} + '/' + ${character.get('characterId').asText()}}">
+                    <div class="character-emblem">
+                        <img class="user-banner" th:src="@{'https://www.bungie.net' + ${character.get('emblemBackgroundPath').asText()}}" alt="Character Emblem">
+                        <div class="power-level" style="font-family: Geneva, Verdana, sans-serif; font-weight: bold;" th:text="${character.get('light').asText()}"></div>
+                        <div class="type-character">
+                            <div class="class-name">
+                                <span th:switch="${character.get('classType').asText()}">
+                                    <span th:case="'2'">Warlock</span>
+                                    <span th:case="'0'">Titan</span>
+                                    <span th:case="'1'">Hunter</span>
+                                </span>
+                            </div>
+                            <div class="race-name">
+                                <span th:switch="${character.get('raceType').asText()}">
+                                    <span th:case="'1'">Awoken</span>
+                                    <span th:case="'2'">Exo</span>
+                                    <span th:case="'0'">Human</span>
+                                </span>
+                            </div>
+                            <div class="character-level">
+                                <span th:text="${character.get('levelProgression').get('level').asInt()}"></span>
+                            </div>
                         </div>
-                        <div class="race-name">
-                            <span th:switch="${character.get('raceHash').asText()}">
-                                <span th:case="'2803282938'">Awoken</span>
-                                <span th:case="'898834093 '">Exo</span>
-                                <span th:case="'671679327'">---</span>
-                            </span>
+                        <div class="time-played">
+                            <span th:text="${character.get('minutesPlayedTotal').asInt()/60}+ 'h ' + ${character.get('minutesPlayedTotal').asInt()%60} + 'min'"></span>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 
@@ -49,31 +54,6 @@
             <p><span th:text="${currentGuardianRank}"></span></p>
             <p><span th:text="${lifetimeHighestGuardianRank}"></span></p>
             <p><span th:text="${renewedGuardianRank}"></span></p>
-        </div>
-
-        <div>
-            <p><span th:text="${currentGuardianRank}"></span></p>
-            <p><span th:text="${lifetimeHighestGuardianRank}"></span></p>
-            <p><span th:text="${renewedGuardianRank}"></span></p>
-        </div>
-
-        <div>
-            <p><span th:text="${currentGuardianRank}"></span></p>
-            <p><span th:text="${lifetimeHighestGuardianRank}"></span></p>
-            <p><span th:text="${renewedGuardianRank}"></span></p>
-        </div>
-
-        <div>
-            <p><span th:text="${currentGuardianRank}"></span></p>
-            <p><span th:text="${lifetimeHighestGuardianRank}"></span></p>
-            <p><span th:text="${renewedGuardianRank}"></span></p>
-        </div>
-
-        <div>
-            <p><span th:text="${currentGuardianRank}"></span></p>
-            <p><span th:text="${lifetimeHighestGuardianRank}"></span></p>
-            <p><span th:text="${renewedGuardianRank}"></span></p>
-        </div>
         </div>
 
     <div th:text="${characters}"></div>

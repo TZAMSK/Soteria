@@ -33,7 +33,7 @@ public class BungieAPIController {
                                  @PathVariable String membershipId){
 
         String url = String.format("%s/%s/Profile/%s/?components=%d", rootURL, membershipType, membershipId, 100);
-        String characterUrl = String.format("%s/%s/Profile/%s/?components=%d", rootURL, membershipType, membershipId, 200);
+        String charactersUrl = String.format("%s/%s/Profile/%s/?components=%d", rootURL, membershipType, membershipId, 200);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-API-Key", apiKey);
@@ -41,7 +41,7 @@ public class BungieAPIController {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-        ResponseEntity<String> characterResponse = restTemplate.exchange(characterUrl, HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> charactersResponse = restTemplate.exchange(charactersUrl, HttpMethod.GET, entity, String.class);
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -55,9 +55,9 @@ public class BungieAPIController {
 
         try {
             JsonNode root = mapper.readTree(response.getBody());
-            JsonNode characterRoot = mapper.readTree(characterResponse.getBody());
+            JsonNode charactersRoot = mapper.readTree(charactersResponse.getBody());
 
-            JsonNode charactersData = characterRoot.path("Response").path("characters").path("data");
+            JsonNode charactersData = charactersRoot.path("Response").path("characters").path("data");
             charactersData.forEach(character -> {
                 characters.add(character);
             });
@@ -82,6 +82,31 @@ public class BungieAPIController {
         mav.addObject("lifetimeHighestGuardianRank", lifetimeHighestGuardianRank);
         mav.addObject("renewedGuardianRank", renewedGuardianRank);
         mav.addObject("characters", characters);
+        return mav;
+    }
+
+    @GetMapping("/profile/{membershipType}/{membershipId}/{characterId}")
+    @ResponseBody
+    public ModelAndView getUserProfile(@PathVariable String membershipType,
+                                       @PathVariable String membershipId,
+                                       @PathVariable String characterId){
+
+        String characterUrl = String.format("%s/%s/Profile/%s/Character/%s/?components=%d", rootURL, membershipType, membershipId, characterId, 900);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-API-Key", apiKey);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> characterResponse = restTemplate.exchange(characterUrl, HttpMethod.GET, entity, String.class);
+
+        ObjectMapper mapper = new ObjectMapper();;
+        try {
+            JsonNode characterRoot = mapper.readTree(characterResponse.getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ModelAndView mav = new ModelAndView("profile-character");
+        mav.addObject("characterStats", characterResponse.getBody());
         return mav;
     }
 }
