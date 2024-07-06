@@ -38,6 +38,27 @@ header{
     align-items: center;
 }
 
+.login-logo{
+    display: flex;
+    align-items: center;
+}
+
+.fa.fa-sign-out{
+    margin-left: 10px;
+    color: #47B8C4;
+    font-size: 20px;
+}
+
+.loginBtn{
+    background-image: linear-gradient(#47B8C4, #3366CC);
+    color: white;
+    padding: 15px 25px;
+    margin-left: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+}
+
 header.sticky{
     padding: 1px 50px;
     background: #fff;
@@ -83,7 +104,7 @@ header div div .subnavbtn:hover{
     overflow: hidden;
 }
 
-.subnav .subnavbtn {
+.subnav .subnavbtn, .subnavbtn-community, .subnavbtn-progression{
     font-size: 16px;
     border: none;
     outline: none;
@@ -122,7 +143,6 @@ header div div .subnavbtn:hover{
 
 .subnav:hover .subnav-content {
     display: flex;
-
 }
 
 .sub-subnav-content {
@@ -150,3 +170,9 @@ header div div .subnavbtn:hover{
     background-color: inherit;
     font-family: inherit;
 }
+
+.nav-btns{
+    display: flex;
+    align-items: center;
+}
+
