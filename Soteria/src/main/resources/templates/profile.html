@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Soteria</title>
     <link rel="stylesheet" th:href="@{/images/style.css}">
+    <link rel="stylesheet" th:href="@{/images/profile.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script th:src="@{/images/scrollNavbar.js}"></script>
 </head>
@@ -12,7 +13,70 @@
     <header th:replace="header :: header"></header>
 
     <h1>User profile</h1>
-    <p> Welcome <span th:text="${displayName}"></span></p>
+    <p> Welcome <span th:text="${displayName + '#' + bungieGlobalDisplayNameCode}"></span></p>
+
+    <div class="container-group">
+        <div>
+            <h2>Characters:</h2>
+            <div th:each="character : ${characters}">
+                <img src="">
+                <p>Character ID: <span th:text="${character.get('membershipId').asText()}"></span></p>
+                <p>Last Played: <span th:text="${character.get('dateLastPlayed').asText()}"></span></p>
+                <div class="character-emblem">
+                    <img class="user-banner" th:src="@{'https://www.bungie.net' + ${character.get('emblemBackgroundPath').asText()}}" alt="Character Emblem">
+                    <div class="power-level" th:text="${character.get('light').asText()}"></div>
+                    <div class="type-character">
+                        <div class="class-name">
+                            <span th:switch="${character.get('classHash').asText()}">
+                                <span th:case="'2271682572'">Warlock</span>
+                                <span th:case="'3655393761'">Titan</span>
+                                <span th:case="'671679327'">Hunter</span>
+                            </span>
+                        </div>
+                        <div class="race-name">
+                            <span th:switch="${character.get('raceHash').asText()}">
+                                <span th:case="'2803282938'">Awoken</span>
+                                <span th:case="'898834093 '">Exo</span>
+                                <span th:case="'671679327'">---</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <p><span th:text="${currentGuardianRank}"></span></p>
+            <p><span th:text="${lifetimeHighestGuardianRank}"></span></p>
+            <p><span th:text="${renewedGuardianRank}"></span></p>
+        </div>
+
+        <div>
+            <p><span th:text="${currentGuardianRank}"></span></p>
+            <p><span th:text="${lifetimeHighestGuardianRank}"></span></p>
+            <p><span th:text="${renewedGuardianRank}"></span></p>
+        </div>
+
+        <div>
+            <p><span th:text="${currentGuardianRank}"></span></p>
+            <p><span th:text="${lifetimeHighestGuardianRank}"></span></p>
+            <p><span th:text="${renewedGuardianRank}"></span></p>
+        </div>
+
+        <div>
+            <p><span th:text="${currentGuardianRank}"></span></p>
+            <p><span th:text="${lifetimeHighestGuardianRank}"></span></p>
+            <p><span th:text="${renewedGuardianRank}"></span></p>
+        </div>
+
+        <div>
+            <p><span th:text="${currentGuardianRank}"></span></p>
+            <p><span th:text="${lifetimeHighestGuardianRank}"></span></p>
+            <p><span th:text="${renewedGuardianRank}"></span></p>
+        </div>
+        </div>
+
+    <div th:text="${characters}"></div>
     <div th:text="${profileData}"></div>
 </body>
 </html>

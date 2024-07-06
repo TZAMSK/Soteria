@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class BungieAPIController {
 
@@ -27,10 +30,10 @@ public class BungieAPIController {
     @GetMapping("/profile/{membershipType}/{membershipId}")
     @ResponseBody
     public ModelAndView getUserProfile(@PathVariable String membershipType,
-                                 @PathVariable String membershipId,
-                                 @RequestParam(defaultValue = "100") int components){
+                                 @PathVariable String membershipId){
 
-        String url = String.format("%s/%s/Profile/%s/?components=%d", rootURL, membershipType, membershipId, components);
+        String url = String.format("%s/%s/Profile/%s/?components=%d", rootURL, membershipType, membershipId, 100);
+        String characterUrl = String.format("%s/%s/Profile/%s/?components=%d", rootURL, membershipType, membershipId, 200);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-API-Key", apiKey);
@@ -38,12 +41,33 @@ public class BungieAPIController {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> characterResponse = restTemplate.exchange(characterUrl, HttpMethod.GET, entity, String.class);
 
         ObjectMapper mapper = new ObjectMapper();
+
         String displayName = "";
+        int currentGuardianRank = 0;
+        int lifetimeHighestGuardianRank = 0;
+        int renewedGuardianRank = 0;
+        int bungieGlobalDisplayNameCode = 0;
+
+        List<JsonNode> characters = new ArrayList<>();
+
         try {
             JsonNode root = mapper.readTree(response.getBody());
+            JsonNode characterRoot = mapper.readTree(characterResponse.getBody());
+
+            JsonNode charactersData = characterRoot.path("Response").path("characters").path("data");
+            charactersData.forEach(character -> {
+                characters.add(character);
+            });
+
             displayName = root.path("Response").path("profile").path("data").path("userInfo").path("displayName").asText();
+            bungieGlobalDisplayNameCode = root.path("Response").path("profile").path("data").path("userInfo").path("bungieGlobalDisplayNameCode").asInt();
+            currentGuardianRank = root.path("Response").path("profile").path("data").path("currentGuardianRank").asInt();
+            lifetimeHighestGuardianRank = root.path("Response").path("profile").path("data").path("lifetimeHighestGuardianRank").asInt();
+            renewedGuardianRank = root.path("Response").path("profile").path("data").path("renewedGuardianRank").asInt();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,6 +76,12 @@ public class BungieAPIController {
 
         mav.addObject("profileData", response.getBody());
         mav.addObject("displayName", displayName);
+        mav.addObject("bungieGlobalDisplayNameCode", bungieGlobalDisplayNameCode);
+        mav.addObject("renewedGuardianRank", renewedGuardianRank);
+        mav.addObject("currentGuardianRank", currentGuardianRank);
+        mav.addObject("lifetimeHighestGuardianRank", lifetimeHighestGuardianRank);
+        mav.addObject("renewedGuardianRank", renewedGuardianRank);
+        mav.addObject("characters", characters);
         return mav;
     }
 }

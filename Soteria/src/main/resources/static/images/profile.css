@@ -1,0 +1,34 @@
+.character-emblem {
+    position: relative;
+    display: inline-block;
+}
+
+.power-level {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: yellow;
+    padding: 0.5em 1em;
+    font-size: 1.6em;
+}
+
+.user-banner {
+    width: 400px;
+}
+
+.type-character {
+    position: absolute;
+    top: 0;
+    left: 20%;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    font-size: 1.1em;
+}
+
+.class-name {
+    color: #DCE7E8;
+}
+
+.race-name {
+    color: #8A8F8F;
+}
