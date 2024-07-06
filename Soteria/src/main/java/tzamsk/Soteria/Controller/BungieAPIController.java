@@ -1,5 +1,7 @@
 package tzamsk.Soteria.Controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,9 +26,9 @@ public class BungieAPIController {
 
     @GetMapping("/profile/{membershipType}/{membershipId}")
     @ResponseBody
-    public String getUserProfile(@PathVariable String membershipType,
+    public ModelAndView getUserProfile(@PathVariable String membershipType,
                                  @PathVariable String membershipId,
-                                 @RequestParam(defaultValue = "0") int components){
+                                 @RequestParam(defaultValue = "100") int components){
 
         String url = String.format("%s/%s/Profile/%s/?components=%d", rootURL, membershipType, membershipId, components);
 
@@ -35,8 +37,21 @@ public class BungieAPIController {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        String response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class).getBody();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
-        return response;
+        ObjectMapper mapper = new ObjectMapper();
+        String displayName = "";
+        try {
+            JsonNode root = mapper.readTree(response.getBody());
+            displayName = root.path("Response").path("profile").path("data").path("userInfo").path("displayName").asText();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ModelAndView mav = new ModelAndView("profile");
+
+        mav.addObject("profileData", response.getBody());
+        mav.addObject("displayName", displayName);
+        return mav;
     }
 }
